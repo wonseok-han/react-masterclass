@@ -1,6 +1,7 @@
 import { CircleProps, ContainerProps } from './types';
 
 import styled from 'styled-components';
+import { useState } from 'react';
 
 const Container = styled.div<ContainerProps>`
   width: 200px;
@@ -11,9 +12,13 @@ const Container = styled.div<ContainerProps>`
 `;
 
 const Circle = ({ bgColor, borderColor }: CircleProps) => {
+  const [counter, setCounter] = useState<number>(1);
+
   return (
-    <div>
-      <Container bgColor={bgColor} borderColor={borderColor} />
+    <div onClick={() => setCounter(counter + 1)}>
+      <Container bgColor={bgColor} borderColor={borderColor}>
+        {counter}
+      </Container>
     </div>
   );
 };
