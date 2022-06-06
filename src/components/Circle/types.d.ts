@@ -1,5 +1,8 @@
 export interface CircleProps {
   bgColor: string;
+  borderColor?: string;
 }
 
-export type ContainerProps = CircleProps;
+export interface ContainerProps extends CircleProps {
+  borderColor: string;
+}

@@ -7,12 +7,13 @@ const Container = styled.div<ContainerProps>`
   height: 200px;
   background-color: ${(props) => props.bgColor};
   border-radius: 100px;
+  border: 2px solid ${(props) => props.borderColor};
 `;
 
-const Circle = ({ bgColor }: CircleProps) => {
+const Circle = ({ bgColor, borderColor }: CircleProps) => {
   return (
     <div>
-      <Container bgColor={bgColor} />
+      <Container bgColor={bgColor} borderColor={borderColor} />
     </div>
   );
 };
