@@ -1,6 +1,6 @@
 # Nomad React-MasterClass Education
 - [x] Styled Components
-- [ ] Typescript
+- [x] Typescript
 - [ ] Crypto Tracker
 - [ ] State Management
 - [ ] Trello Clone
