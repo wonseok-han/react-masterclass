@@ -6,3 +6,6 @@
 - [styled-reset](https://github.com/zacanger/styled-reset/blob/master/src/index.ts)
 - [Source Sans Pro Font](https://fonts.google.com/specimen/Source+Sans+Pro?query=source+sans)
 - [Colors](https://flatuicolors.com/palette/gb)
+
+# API
+- [coinpaprika](https://api.coinpaprika.com)

@@ -53,7 +53,7 @@
                     "boolean"
                 ],
                 "format": [
-                    "camelCase"
+                    "PascalCase"
                 ],
                 "prefix": [
                     "is",
@@ -70,7 +70,8 @@
                     "parameter"
                 ],
                 "format": [
-                    "camelCase"
+                    "camelCase",
+                    "snake_case"
                 ]
             },
             {
@@ -149,7 +150,11 @@
         ], // Enforce consistent spacing before blocks
         "@typescript-eslint/space-before-function-paren": [
             "error",
-            "never"
+            {
+                "anonymous": "never",
+                "asyncArrow": "always",
+                "named": "never"
+            }
         ], // Enforce consistent spacing before function parenthesis
         "@typescript-eslint/space-infix-ops": [
             "error",
