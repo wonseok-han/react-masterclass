@@ -124,7 +124,8 @@
             2
         ], // Enforce consistent indentation
         "@typescript-eslint/comma-dangle": [
-            "error"
+            "error",
+            "only-multiline"
         ], // Require or disallow trailing commas
         "@typescript-eslint/no-extra-parens": [
             "error",
