@@ -127,10 +127,6 @@
             "error",
             "only-multiline"
         ], // Require or disallow trailing commas
-        "@typescript-eslint/no-extra-parens": [
-            "error",
-            "all"
-        ], // Disallow unnecessary parentheses
         "@typescript-eslint/no-redeclare": [
             "error"
         ], // Disallow variable redeclaration
