@@ -7,7 +7,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
-import { fetchCoin } from 'api';
+import { commonFetch } from 'api';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 
@@ -86,11 +86,11 @@ const Coin = () => {
 
   const { isLoading: isCoinLoading, data: coin } = useQuery<CoinProps>(
     ['coin', coinId],
-    () => fetchCoin('coins', coinId)
+    () => commonFetch('coins', coinId)
   );
   const { isLoading: isTickersLoading, data: tickers } =
     useQuery<CoinTickersProps>(['tickers', coinId], () =>
-      fetchCoin('tickers', coinId)
+      commonFetch('tickers', coinId)
     );
 
   const priceMatch = useMatch('/:coinId/price');
@@ -145,7 +145,11 @@ const Coin = () => {
           <Link to={`/${coinId}/price`}>Price</Link>
         </Tab>
       </Tabs>
-      <Outlet />
+      <Outlet
+        context={{
+          coinId,
+        }}
+      />
     </Container>
   );
 };

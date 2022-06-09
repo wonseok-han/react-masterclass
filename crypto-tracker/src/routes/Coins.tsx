@@ -1,6 +1,6 @@
 import { CoinProps } from './types.d';
 import { Link } from 'react-router-dom';
-import { fetchCoins } from 'api';
+import { commonFetch } from 'api';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 
@@ -57,9 +57,8 @@ const Img = styled.img`
 `;
 
 const Coins = () => {
-  const { isLoading, data } = useQuery<Array<CoinProps>>(
-    'allCoins',
-    fetchCoins
+  const { isLoading, data } = useQuery<Array<CoinProps>>('allCoins', () =>
+    commonFetch('coins')
   );
 
   return (

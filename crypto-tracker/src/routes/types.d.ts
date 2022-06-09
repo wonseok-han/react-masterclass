@@ -4,6 +4,10 @@ export interface RouteStateProps {
   };
 }
 
+interface ChartRouteProps {
+  coinId: string;
+}
+
 export interface CoinProps {
   id: string;
   name: string;
@@ -59,4 +63,15 @@ export interface CoinTickersProps {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     USD: UsdProps;
   };
+}
+
+export interface CoinChartProps {
+  time_open: Date;
+  time_close: Date;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  market_cap: number;
 }
