@@ -1,7 +1,8 @@
+import { CoinPriceProps, CoinProps } from './types';
 import { useEffect, useState } from 'react';
+import { useLocation, useParams } from 'react-router-dom';
 
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -35,18 +36,49 @@ interface RouteStateProps {
 
 const Coin = () => {
   const [isLoading, setIsLoading] = useState(true);
-  // const { coinId } = useParams();
+  const { coinId } = useParams();
   const { state } = useLocation() as RouteStateProps;
+  const [coin, setCoin] = useState<CoinProps>();
+  const [price, setPrice] = useState<CoinPriceProps>();
+
+  const handleFetch = async () => {
+    const infoData = (await (
+      await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+    ).json()) as CoinProps;
+
+    const priceData = (await (
+      await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+    ).json()) as CoinPriceProps;
+
+    setIsLoading(false);
+
+    setCoin({
+      ...infoData,
+    });
+
+    setPrice({
+      ...priceData,
+    });
+
+    console.log(infoData);
+    console.log(priceData);
+    console.log(state);
+  };
 
   useEffect(() => {
-    setIsLoading(true);
+    void handleFetch();
   }, []);
+
   return (
     <Container>
       <Header>
-        <Title>{state?.name || 'Loading...'}</Title>
+        <Title>{coin?.name || 'Loading...'}</Title>
       </Header>
-      {isLoading ? <Loader>Loading...</Loader> : null}
+      {isLoading ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <div>{price.quotes.USD.price}</div>
+      )}
     </Container>
   );
 };

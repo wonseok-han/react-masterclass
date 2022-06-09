@@ -67,13 +67,7 @@ const Coins = () => {
           .json()
           .then((data: Array<CoinProps>) => {
             const resData: Array<CoinProps> = data;
-            setCoins(
-              resData?.slice(0, 100).map((item: CoinProps) => ({
-                ...item,
-                isNew: item.is_new,
-                isActive: item.is_active,
-              }))
-            );
+            setCoins([...resData.slice(0, 100)]);
             setIsLoading(false);
           })
           .catch((error) => console.log(error));
