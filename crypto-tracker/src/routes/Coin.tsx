@@ -1,4 +1,4 @@
-import { CoinPriceProps, CoinProps, RouteStateProps } from './types';
+import { CoinProps, CoinTickersProps, RouteStateProps } from './types';
 import {
   Link,
   Outlet,
@@ -6,9 +6,10 @@ import {
   useMatch,
   useParams,
 } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
+import { fetchCoin } from 'api';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -80,37 +81,22 @@ const Tab = styled.span<{ isActive: boolean }>`
 `;
 
 const Coin = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const { coinId } = useParams();
   const { state } = useLocation() as RouteStateProps;
-  const [coin, setCoin] = useState<CoinProps>();
-  const [price, setPrice] = useState<CoinPriceProps>();
+
+  const { isLoading: isCoinLoading, data: coin } = useQuery<CoinProps>(
+    ['coin', coinId],
+    () => fetchCoin('coins', coinId)
+  );
+  const { isLoading: isTickersLoading, data: tickers } =
+    useQuery<CoinTickersProps>(['tickers', coinId], () =>
+      fetchCoin('tickers', coinId)
+    );
+
   const priceMatch = useMatch('/:coinId/price');
   const chartMatch = useMatch('/:coinId/chart');
 
-  const handleFetch = async () => {
-    const infoData = (await (
-      await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-    ).json()) as CoinProps;
-
-    const priceData = (await (
-      await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-    ).json()) as CoinPriceProps;
-
-    setCoin({
-      ...infoData,
-    });
-
-    setPrice({
-      ...priceData,
-    });
-
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    void handleFetch();
-  }, [coinId]);
+  const isLoading = isCoinLoading || isTickersLoading;
 
   return (
     <Container>
@@ -141,11 +127,11 @@ const Coin = () => {
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{price?.total_supply}</span>
+              <span>{tickers?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{price?.max_supply}</span>
+              <span>{tickers?.max_supply}</span>
             </OverviewItem>
           </Overview>
         </>

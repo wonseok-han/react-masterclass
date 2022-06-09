@@ -44,7 +44,7 @@ interface UsdProps {
   volume_24h: number;
   volume_24h_change_24h: number;
 }
-export interface CoinPriceProps {
+export interface CoinTickersProps {
   id: string;
   name: string;
   symbol: string;
