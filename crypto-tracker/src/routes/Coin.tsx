@@ -69,16 +69,14 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
   background-color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+    props.isActive ? props.theme.accentColor : 'rgba(0, 0, 0, 0.5)'};
   a {
     display: block;
   }
-  color: ${(props) =>
-    props.isActive ? props.theme.textColor : props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Coin = () => {
