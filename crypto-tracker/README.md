@@ -9,3 +9,4 @@
 
 # API
 - [coinpaprika](https://api.coinpaprika.com)
+- [cryptoicon](https://coinicons-api.vercel.app)
