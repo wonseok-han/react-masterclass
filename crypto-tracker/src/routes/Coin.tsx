@@ -7,6 +7,7 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import { Helmet } from 'react-helmet-async';
 import { commonFetch } from 'api';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
@@ -89,8 +90,12 @@ const Coin = () => {
     () => commonFetch('coins', coinId)
   );
   const { isLoading: isTickersLoading, data: tickers } =
-    useQuery<CoinTickersProps>(['tickers', coinId], () =>
-      commonFetch('tickers', coinId)
+    useQuery<CoinTickersProps>(
+      ['tickers', coinId],
+      () => commonFetch('tickers', coinId),
+      {
+        refetchInterval: 5000,
+      }
     );
 
   const priceMatch = useMatch('/:coinId/price');
@@ -101,6 +106,11 @@ const Coin = () => {
   return (
     <Container>
       <Header>
+        <Helmet>
+          <title>
+            {state?.name ? state.name : isLoading ? 'Loading' : coin?.name}
+          </title>
+        </Helmet>
         <Title>
           {state?.name ? state.name : isLoading ? 'Loading' : coin?.name}
         </Title>
@@ -119,8 +129,8 @@ const Coin = () => {
               <span>${coin?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{coin?.open_source ? 'Yes' : 'No'}</span>
+              <span>Price:</span>
+              <span>{tickers?.quotes.USD.price}</span>
             </OverviewItem>
           </Overview>
           <Description>{coin?.description}</Description>

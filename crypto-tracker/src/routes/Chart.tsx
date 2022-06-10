@@ -17,7 +17,10 @@ const Chart = () => {
   const { coinId }: ChartRouteProps = useOutletContext();
   const { isLoading, data } = useQuery<Array<CoinChartProps>>(
     ['ohlcv', coinId || params.coinId],
-    () => fetchCoinHistory(coinId || params.coinId)
+    () => fetchCoinHistory(coinId || params.coinId),
+    {
+      refetchInterval: 10000,
+    }
   );
 
   return (
