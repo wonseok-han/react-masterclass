@@ -58,6 +58,8 @@ const Chart = () => {
               axisBorder: {
                 show: false,
               },
+              categories: data?.map((price) => price.time_close),
+              type: 'datetime',
             },
             yaxis: {
               show: false,
@@ -65,6 +67,19 @@ const Chart = () => {
             stroke: {
               curve: 'smooth',
               width: 5,
+            },
+            fill: {
+              type: 'gradient',
+              gradient: {
+                gradientToColors: ['blue'],
+                stops: [0, 100],
+              },
+            },
+            colors: ['red'],
+            tooltip: {
+              y: {
+                formatter: (value) => `$${value.toFixed(2)}`,
+              },
             },
           }}
         />
