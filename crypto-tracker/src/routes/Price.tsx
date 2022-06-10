@@ -63,7 +63,15 @@ const Price = () => {
             <Usd key={key}>
               <span>
                 <>
-                  {key} : {data.quotes.USD?.[key]}
+                  {`${key.charAt(0).toUpperCase()}${key
+                    .toLowerCase()
+                    .replace(
+                      /[^a-zA-Z0-9]+(.)/g,
+                      (m, chr: string) => ` ${chr.toUpperCase()}`
+                    )
+                    .slice(1)}
+                    `}
+                  : {data.quotes.USD?.[key]}
                 </>
               </span>
             </Usd>
