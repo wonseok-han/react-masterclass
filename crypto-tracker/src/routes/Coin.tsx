@@ -81,6 +81,23 @@ const Tab = styled.span<{ isActive: boolean }>`
   color: ${(props) => props.theme.textColor};
 `;
 
+const BackButton = styled.div`
+  margin-right: 30px;
+  font-weight: bold;
+  font-size: 40px;
+  background-color: ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.bgColor};
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  display: block;
+  text-align: center;
+
+  :hover {
+    color: ${(props) => props.theme.accentColor};
+  }
+`;
+
 const Coin = () => {
   const { coinId } = useParams();
   const { state } = useLocation() as RouteStateProps;
@@ -106,6 +123,9 @@ const Coin = () => {
   return (
     <Container>
       <Header>
+        <BackButton>
+          <Link to={`/`}>&larr;</Link>
+        </BackButton>
         <Helmet>
           <title>
             {state?.name ? state.name : isLoading ? 'Loading' : coin?.name}

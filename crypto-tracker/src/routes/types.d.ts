@@ -30,7 +30,7 @@ export interface CoinProps {
 }
 
 interface UsdProps {
-  ath_date: Date;
+  ath_date: string;
   ath_price: number;
   market_cap: number;
   market_cap_change_24h: number;
@@ -47,6 +47,7 @@ interface UsdProps {
   price: number;
   volume_24h: number;
   volume_24h_change_24h: number;
+  [prop: string]: unknown;
 }
 export interface CoinTickersProps {
   id: string;

@@ -1,9 +1,9 @@
 import { ChartRouteProps, CoinChartProps } from './types';
+import styled, { useTheme } from 'styled-components';
 import { useOutletContext, useParams } from 'react-router-dom';
 
 import ReactApexChart from 'react-apexcharts';
 import { fetchCoinHistory } from 'api';
-import styled from 'styled-components';
 import { useQuery } from 'react-query';
 
 const Loader = styled.span`
@@ -13,6 +13,7 @@ const Loader = styled.span`
 
 const Chart = () => {
   const params = useParams();
+  const { accentColor, textColor } = useTheme();
 
   const { coinId }: ChartRouteProps = useOutletContext();
   const { isLoading, data } = useQuery<Array<CoinChartProps>>(
@@ -29,11 +30,19 @@ const Chart = () => {
         <Loader>Loading...</Loader>
       ) : (
         <ReactApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: 'price',
-              data: data?.map((price) => price.close),
+              data: data.map((price) => ({
+                x: new Date(price.time_close),
+                y: [
+                  price.open.toFixed(2),
+                  price.high.toFixed(2),
+                  price.low.toFixed(2),
+                  price.close.toFixed(2),
+                ],
+              })),
             },
           ]}
           options={{
@@ -41,47 +50,39 @@ const Chart = () => {
               mode: 'dark',
             },
             chart: {
-              height: 500,
-              width: 500,
+              type: 'candlestick',
               background: 'transprent',
               toolbar: {
                 show: false,
               },
             },
-            grid: {
-              show: false,
-            },
             xaxis: {
-              labels: {
-                show: false,
-              },
-              axisTicks: {
-                show: false,
-              },
-              axisBorder: {
-                show: false,
-              },
               categories: data?.map((price) => price.time_close),
               type: 'datetime',
-            },
-            yaxis: {
-              show: false,
-            },
-            stroke: {
-              curve: 'smooth',
-              width: 5,
-            },
-            fill: {
-              type: 'gradient',
-              gradient: {
-                gradientToColors: ['blue'],
-                stops: [0, 100],
+              labels: {
+                style: {
+                  colors: textColor,
+                },
               },
             },
-            colors: ['red'],
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
+            yaxis: {
+              tooltip: {
+                enabled: true,
+              },
+              labels: {
+                style: {
+                  colors: textColor,
+                },
+              },
+            },
+            grid: {
+              borderColor: textColor,
+            },
+            title: {
+              text: 'CandleStic Chart',
+              align: 'center',
+              style: {
+                color: accentColor,
               },
             },
           }}
