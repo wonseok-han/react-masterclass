@@ -66,8 +66,8 @@ export interface CoinTickersProps {
 }
 
 export interface CoinChartProps {
-  time_open: Date;
-  time_close: Date;
+  time_open: string;
+  time_close: string;
   open: number;
   high: number;
   low: number;

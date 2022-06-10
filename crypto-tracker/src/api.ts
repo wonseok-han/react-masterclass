@@ -13,7 +13,7 @@ export const commonFetch = (url: string, key?: string) => {
 
 export const fetchCoinHistory = (coinId: string) => {
   const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - 60 * 60 * 23 * 7 * 1;
+  const startDate = endDate - 60 * 60 * 23 * 1;
 
   return fetch(
     `${baseUrl}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
