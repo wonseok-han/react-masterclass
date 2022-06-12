@@ -3,7 +3,7 @@
 
 - [x] Typescript
 
-- [ ] Crypto Tracker
+- [x] Crypto Tracker
 
 - [ ] State Management
 
