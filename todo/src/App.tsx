@@ -1,8 +1,7 @@
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import { darkTheme, lightTheme, reset } from 'styles/global';
+import { darkTheme, reset } from 'styles/global';
 
-import { isDarkAtom } from 'routes/atoms';
-import { useRecoilValue } from 'recoil';
+import TodoList from 'TodoList';
 
 const GlobalStyle = createGlobalStyle`
 ${reset}
@@ -19,12 +18,11 @@ a {
 `;
 
 function App() {
-  const isDark = useRecoilValue(isDarkAtom);
-
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         <GlobalStyle />
+        <TodoList />
       </ThemeProvider>
     </>
   );
