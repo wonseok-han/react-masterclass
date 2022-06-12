@@ -9,6 +9,7 @@ interface FormProps {
   username: string;
   password: string;
   password1: string;
+  extraError?: string;
 }
 
 const ToDoList = () => {
@@ -16,6 +17,7 @@ const ToDoList = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<FormProps>({
     defaultValues: {
       email: '@naver.com',
@@ -23,7 +25,21 @@ const ToDoList = () => {
   });
 
   const onValid = (data: FormProps) => {
-    console.log(data);
+    if (data.password !== data.password1) {
+      setError(
+        'password1',
+        {
+          message: 'Password are not the same.',
+        },
+        {
+          shouldFocus: true,
+        }
+      );
+
+      return;
+    }
+
+    setError('extraError', { message: 'Server offline.' });
   };
 
   return (
@@ -44,7 +60,15 @@ const ToDoList = () => {
         />
         <span>{errors?.email?.message}</span>
         <input
-          {...register('firstName', { required: 'write here' })}
+          {...register('firstName', {
+            required: 'write here',
+            validate: {
+              noNico: (value) =>
+                value.includes('nico') ? 'no nico allowed' : true,
+              noNick: (value) =>
+                value.includes('nick') ? 'no nick allowed' : true,
+            },
+          })}
           placeholder="First Name"
         />
         <span>{errors?.firstName?.message}</span>
@@ -54,12 +78,24 @@ const ToDoList = () => {
         />
         <span>{errors?.lastName?.message}</span>
         <input
-          {...register('username', { required: 'write here', minLength: 10 })}
+          {...register('username', {
+            required: 'write here',
+            minLength: {
+              value: 2,
+              message: 'Your User Name is too short.',
+            },
+          })}
           placeholder="Username"
         />
         <span>{errors?.username?.message}</span>
         <input
-          {...register('password', { required: 'write here', minLength: 5 })}
+          {...register('password', {
+            required: 'write here',
+            minLength: {
+              value: 2,
+              message: 'Your password is too short.',
+            },
+          })}
           placeholder="Password"
         />
         <span>{errors?.password?.message}</span>
@@ -67,7 +103,7 @@ const ToDoList = () => {
           {...register('password1', {
             required: 'Password is required',
             minLength: {
-              value: 5,
+              value: 2,
               message: 'Your password is too short.',
             },
           })}
@@ -75,6 +111,7 @@ const ToDoList = () => {
         />
         <span>{errors?.password1?.message}</span>
         <button>Add</button>
+        <span>{errors?.extraError?.message}</span>
       </form>
     </div>
   );
