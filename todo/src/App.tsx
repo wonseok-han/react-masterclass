@@ -1,7 +1,7 @@
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { darkTheme, reset } from 'styles/global';
 
-import TodoList from 'TodoList';
+import TodoList from 'components/TodoList';
 
 const GlobalStyle = createGlobalStyle`
 ${reset}
