@@ -16,3 +16,6 @@
 
 # Chart
 - [ApexCharts](https://apexcharts.com)
+
+# State Management
+- [Recoil](https://recoiljs.org/ko/)

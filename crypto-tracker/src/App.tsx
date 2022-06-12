@@ -1,13 +1,13 @@
+import { darkTheme, lightTheme } from 'styles/global';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import { HelmetProvider } from 'react-helmet-async';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import Router from 'routes/Router';
 import Switch from 'react-switch';
-import { darkTheme } from 'styles/global';
-import { lightTheme } from './styles/global';
+import { isDarkAtom } from 'routes/atoms';
 import { reset } from 'styles/global';
-import { useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}
@@ -38,7 +38,7 @@ const SwitchLabel = styled.label`
 `;
 
 function App() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [isDark, setDark] = useRecoilState(isDarkAtom);
 
   return (
     <>
@@ -46,12 +46,13 @@ function App() {
         <SwitchLabel>
           <span>다크모드</span>
           <Switch
-            onChange={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            checked={theme === 'dark' ? true : false}
+            onChange={() => setDark((previous) => !previous)}
+            checked={isDark}
           />
         </SwitchLabel>
       </SwitchWrapper>
-      <ThemeProvider theme={theme === 'dark' ? darkTheme : lightTheme}>
+
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <HelmetProvider>
           <Router />

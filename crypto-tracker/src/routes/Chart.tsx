@@ -4,7 +4,9 @@ import { useOutletContext, useParams } from 'react-router-dom';
 
 import ReactApexChart from 'react-apexcharts';
 import { fetchCoinHistory } from 'api';
+import { isDarkAtom } from './atoms';
 import { useQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 const Loader = styled.span`
   text-align: center;
@@ -12,8 +14,9 @@ const Loader = styled.span`
 `;
 
 const Chart = () => {
+  const isDark = useRecoilValue(isDarkAtom);
   const params = useParams();
-  const { accentColor, textColor } = useTheme();
+  const { accentColor } = useTheme();
 
   const { coinId }: ChartRouteProps = useOutletContext();
   const { isLoading, data } = useQuery<Array<CoinChartProps>>(
@@ -47,7 +50,7 @@ const Chart = () => {
           ]}
           options={{
             theme: {
-              mode: 'dark',
+              mode: isDark ? 'dark' : 'light',
             },
             chart: {
               type: 'candlestick',
@@ -59,24 +62,11 @@ const Chart = () => {
             xaxis: {
               categories: data?.map((price) => price.time_close),
               type: 'datetime',
-              labels: {
-                style: {
-                  colors: textColor,
-                },
-              },
             },
             yaxis: {
               tooltip: {
                 enabled: true,
               },
-              labels: {
-                style: {
-                  colors: textColor,
-                },
-              },
-            },
-            grid: {
-              borderColor: textColor,
             },
             title: {
               text: 'CandleStic Chart',
