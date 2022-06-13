@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+
 export interface FormProps {
-  toDo: string;
+  toDo?: string;
+  category?: string;
 }
 
-export enum Categories {
-  'DOING' = 'DOING',
-  'DONE' = 'DONE',
-  'TO_DO' = 'TO_DO',
-}
+export type Categories = Array<string>;
 
 export interface TodoProps {
   text: string;
   id: number;
-  category: Categories;
+  category: string;
 }

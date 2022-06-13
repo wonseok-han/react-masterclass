@@ -1,36 +1,52 @@
-import { Categories, TodoProps } from './types';
+import { categoryListState, toDoState } from 'atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { toDoState } from 'atoms';
-import { useSetRecoilState } from 'recoil';
+import { TodoProps } from './types';
+import { setLocalStorage } from 'utils';
 
-const ToDo = ({ text, category, id }: TodoProps) => {
+const ToDo = ({ text, id }: TodoProps) => {
   const setToDos = useSetRecoilState(toDoState);
-
+  const categories = useRecoilValue(categoryListState);
+  console.log(categories);
   const handleClick = (newCategory: TodoProps['category']) => {
     setToDos((previous) => {
       const targetIndex = previous.findIndex((todo) => todo.id === id);
       const newToDo = { text, id, category: newCategory };
-
-      return [
+      const toDos = [
         ...previous.slice(0, targetIndex),
         newToDo,
         ...previous.slice(targetIndex + 1),
       ];
+
+      setLocalStorage('toDos', toDos);
+
+      return toDos;
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setToDos((previous) => {
+      const targetIndex = previous.findIndex((todo) => todo.id === id);
+      const toDos = [
+        ...previous.slice(0, targetIndex),
+        ...previous.slice(targetIndex + 1),
+      ];
+
+      setLocalStorage('toDos', toDos);
+
+      return toDos;
     });
   };
 
   return (
     <li>
       {text}
-      {category !== Categories.DOING && (
-        <button onClick={() => handleClick(Categories.DOING)}>Doing</button>
-      )}
-      {category !== Categories.TO_DO && (
-        <button onClick={() => handleClick(Categories.TO_DO)}>To Do</button>
-      )}
-      {category !== Categories.DONE && (
-        <button onClick={() => handleClick(Categories.DONE)}>Done</button>
-      )}
+      {categories.map((category) => (
+        <button key={category} onClick={() => handleClick(category)}>
+          {category}
+        </button>
+      ))}
+      {<button onClick={() => handleDeleteClick()}>Delete</button>}
     </li>
   );
 };
