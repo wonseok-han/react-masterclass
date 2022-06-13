@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-
 import { CoinProps } from './types.d';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { commonFetch } from 'api';
 import styled from 'styled-components';
+import { useQuery } from 'react-query';
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -20,8 +21,8 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  background-color: lightslategray;
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 10px;
   border-radius: 15px;
 
@@ -57,38 +58,15 @@ const Img = styled.img`
 `;
 
 const Coins = () => {
-  const [coins, setCoins] = useState<Array<CoinProps>>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const handleFetch = () => {
-    fetch('https://api.coinpaprika.com/v1/coins')
-      .then((response) => {
-        response
-          .json()
-          .then((data: Array<CoinProps>) => {
-            const resData: Array<CoinProps> = data;
-            setCoins(
-              resData?.slice(0, 100).map((item: CoinProps) => ({
-                ...item,
-                isNew: item.is_new,
-                isActive: item.is_active,
-              }))
-            );
-            setIsLoading(false);
-          })
-          .catch((error) => console.log(error));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  useEffect(() => {
-    handleFetch();
-  }, []);
+  const { isLoading, data } = useQuery<Array<CoinProps>>('allCoins', () =>
+    commonFetch('coins')
+  );
 
   return (
     <Container>
+      <Helmet>
+        <title>코인</title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
@@ -96,7 +74,7 @@ const Coins = () => {
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {coins.map((coin) => (
+          {data.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={`/${coin.id}`}
