@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import { FormProps } from './types';
-import { toDoState } from './atoms';
+import { toDoState } from 'atoms';
 import { useForm } from 'react-hook-form';
 import { useSetRecoilState } from 'recoil';
 
