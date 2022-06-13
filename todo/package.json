@@ -55,5 +55,6 @@
     "eslint": "^8.17.0",
     "eslint-plugin-react": "^7.30.0",
     "prettier": "^2.6.2"
-  }
+  },
+  "homepage": "https://wonseok-han.github.io/react-masterclass/"
 }
