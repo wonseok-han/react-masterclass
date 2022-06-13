@@ -1,4 +1,5 @@
-import { TodoProps } from './types';
+import { Categories, TodoProps } from './types';
+
 import { toDoState } from 'atoms';
 import { useSetRecoilState } from 'recoil';
 
@@ -21,14 +22,14 @@ const ToDo = ({ text, category, id }: TodoProps) => {
   return (
     <li>
       {text}
-      {category !== 'DOING' && (
-        <button onClick={() => handleClick('DOING')}>Doing</button>
+      {category !== Categories.DOING && (
+        <button onClick={() => handleClick(Categories.DOING)}>Doing</button>
       )}
-      {category !== 'TO_DO' && (
-        <button onClick={() => handleClick('TO_DO')}>To Do</button>
+      {category !== Categories.TO_DO && (
+        <button onClick={() => handleClick(Categories.TO_DO)}>To Do</button>
       )}
-      {category !== 'DONE' && (
-        <button onClick={() => handleClick('DONE')}>Done</button>
+      {category !== Categories.DONE && (
+        <button onClick={() => handleClick(Categories.DONE)}>Done</button>
       )}
     </li>
   );

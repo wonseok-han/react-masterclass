@@ -1,10 +1,9 @@
+import { Categories, TodoProps } from 'components/types';
 import { atom, selector } from 'recoil';
 
-import { TodoProps } from './components/types';
-
-export const categoryState = atom({
+export const categoryState = atom<Categories>({
   key: 'category',
-  default: 'TO_DO',
+  default: Categories.TO_DO,
 });
 
 export const toDoState = atom<Array<TodoProps>>({
