@@ -6,16 +6,15 @@ const ToDo = ({ text, category, id }: TodoProps) => {
   const setToDos = useSetRecoilState(toDoState);
 
   const handleClick = (newCategory: TodoProps['category']) => {
-    console.log(newCategory);
-
     setToDos((previous) => {
       const targetIndex = previous.findIndex((todo) => todo.id === id);
-      const oldToDo = previous[targetIndex];
       const newToDo = { text, id, category: newCategory };
 
-      console.log(oldToDo, newToDo);
-
-      return previous;
+      return [
+        ...previous.slice(0, targetIndex),
+        newToDo,
+        ...previous.slice(targetIndex + 1),
+      ];
     });
   };
 
