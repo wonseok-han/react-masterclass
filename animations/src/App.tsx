@@ -1,4 +1,6 @@
+import { motion } from 'framer-motion';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+
 import { darkTheme, reset } from 'styles/global';
 
 const GlobalStyle = createGlobalStyle`
@@ -20,7 +22,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Box = styled.div`
+const Box = styled(motion.div)`
   width: 200px;
   height: 200px;
   background-color: white;
@@ -33,7 +35,21 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
       <Wrapper>
-        <Box />
+        <Box
+          transition={{
+            type: 'spring',
+            bounce: 0.5,
+            duration: 3,
+            delay: 0.5,
+          }}
+          initial={{
+            scale: 0,
+          }}
+          animate={{
+            scale: 1,
+            rotateZ: 360,
+          }}
+        />
       </Wrapper>
     </ThemeProvider>
   );
