@@ -1,5 +1,5 @@
 {
-  "name": "todo",
+  "name": "animations",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +13,6 @@
     "gh-pages": "^4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-hook-form": "^7.32.0",
     "react-scripts": "5.0.1",
     "recoil": "^0.7.3",
     "styled-components": "^5.3.5",
@@ -25,9 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\"",
-    "deploy": "gh-pages -d build",
-    "predeploy": "yarn build"
+    "lint": "eslint ./src",
+    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\""
   },
   "eslintConfig": {
     "extends": [
@@ -53,8 +51,10 @@
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
     "prettier": "^2.6.2"
-  },
-  "homepage": "https://wonseok-han.github.io/react-masterclass/todo"
+  }
 }
