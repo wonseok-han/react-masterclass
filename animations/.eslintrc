@@ -2,6 +2,7 @@
 // https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin
 // https://github.com/prettier/eslint-config-prettier
 // https://github.com/prettier/eslint-plugin-prettier
+// https://github.com/import-js/eslint-plugin-import
 /**
  * Typescript React Eslint
  */
@@ -15,7 +16,9 @@
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:import/recommended",
+        "plugin:import/typescript"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -35,6 +38,26 @@
     "rules": {
         // "@typescript-eslint/no-explicit-any": "off",    // Disallow the any type
         // "@typescript-eslint/no-unused-vars": ["warn"], // Disallow unused variables
+        "import/order": [
+            "error",
+            {
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    [
+                        "parent",
+                        "sibling"
+                    ],
+                    "index"
+                ],
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                },
+                "newlines-between": "always"
+            }
+        ],
         "prettier/prettier": "error",
         "react/react-in-jsx-scope": "off", // Prevent missing React when using JSX
         "react/jsx-filename-extension": [
@@ -117,7 +140,7 @@
             "error"
         ], // Disallow classes used as namespaces
         "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "error", // Disallow non-null assertions in the left operand of a nullish coalescing operator
-        "@typescript-eslint/no-useless-empty-export": "error", // Disallow empty exports that don't change anything in a module file
+        "@typescript-eslint/no-useless-empty-export": "error", // Disallow empty exports that don"t change anything in a module file
         "@typescript-eslint/prefer-for-of": "error", // Enforce the use of for-of loop over the standard for loop where possible
         "@typescript-eslint/prefer-optional-chain": "error", // Enforce using concise optional chain expressions instead of chained logical ands
         "@typescript-eslint/sort-type-union-intersection-members": [
@@ -195,6 +218,10 @@
         "react": {
             "version": "detect"
         },
+        "import/extensions": [
+            ".ts",
+            ".tsx"
+        ],
         "import/parsers": {
             "@typescript-eslint/parser": [
                 ".ts",
@@ -207,6 +234,10 @@
             "node": {
                 "paths": [
                     "src"
+                ],
+                "extensions": [
+                    ".ts",
+                    ".tsx"
                 ]
             }
         }

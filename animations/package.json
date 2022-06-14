@@ -10,6 +10,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "framer-motion": "^6.3.11",
     "gh-pages": "^4.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
@@ -26,6 +27,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
     "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\""
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "yarn lint"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +59,7 @@
     "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
+    "lint-staged": "^13.0.1",
     "prettier": "^2.6.2"
   }
 }
