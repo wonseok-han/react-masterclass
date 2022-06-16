@@ -33,7 +33,6 @@ const Box = styled(motion.div)`
 const myVars = {};
 
 function App() {
-  console.log(myVars);
   return (
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
