@@ -1,4 +1,4 @@
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { useEffect } from 'react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
@@ -44,10 +44,15 @@ const Box = styled(motion.div)`
 
 function App() {
   const x = useMotionValue(0);
+  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]);
 
   useEffect(() => {
     x.onChange(() => {
       console.log(x.get());
+    });
+
+    scale.onChange(() => {
+      console.log(scale.get());
     });
   }, [x]);
 
@@ -55,10 +60,10 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
       <Wrapper>
-        <button onClick={() => x.set(200)}>click me</button>
         <Box
           style={{
             x,
+            scale,
           }}
           drag="x"
           dragSnapToOrigin
