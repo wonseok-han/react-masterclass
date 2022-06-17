@@ -9,6 +9,6 @@
 
 - [ ] Trello Clone
 
-- [ ] Animations
+- [x] Animations
 
 - [ ] Nomflix Clone
