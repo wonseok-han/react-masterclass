@@ -21,27 +21,25 @@ const Wrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 50vw;
+  grid-template-columns: repeat(2, 1fr);
+  width: 40vw;
   gap: 10px;
-
-  div:first-child {
-    grid-column: span 2;
-  }
-  div:last-child {
-    grid-column: span 2;
-  }
 `;
 
 const Box = styled(motion.div)`
   height: 200px;
-  background-color: rgba(255, 255, 255, 1);
-  border-radius: 40px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Overlay = styled(motion.div)`
@@ -53,21 +51,67 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
+const Circle = styled(motion.div)`
+  background-color: rgba(255, 255, 255, 1);
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+
+const Button = styled(motion.button)`
+  color: rgb(0, 0, 255);
+  font-weight: bold;
+  scale: 1;
+`;
+
+const buttonVariants = {
+  initial: {
+    scale: 1,
+  },
+  hover: (id: string) =>
+    id === 'box1'
+      ? {
+          scale: 1.1,
+          originX: 1,
+          originY: 1,
+        }
+      : {
+          scale: 1.1,
+          originX: -0.1,
+          originY: -0.1,
+        },
+};
+
 function App() {
   const [id, setId] = useState<string | null>(null);
+  const [isToggle, setIsToggle] = useState(false);
+
+  const handleToggle = () => setIsToggle((previous) => !previous);
 
   return (
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
       <Wrapper>
         <Grid>
-          {[1, 2, 3, 4].map((n) => (
-            <Box
-              key={n}
-              layoutId={String(n)}
-              onClick={() => setId(String(n))}
-            />
-          ))}
+          <Box
+            variants={buttonVariants}
+            custom={'box1'}
+            initial="initial"
+            whileHover="hover"
+            layoutId="box1"
+            onClick={() => setId('box1')}
+          />
+          <Box>{!isToggle && <Circle layoutId="circle" />}</Box>
+          <Box>{isToggle && <Circle layoutId="circle" />}</Box>
+          <Box
+            variants={buttonVariants}
+            custom={'box4'}
+            initial="initial"
+            whileHover="hover"
+            layoutId="box4"
+            onClick={() => setId('box4')}
+          />
         </Grid>
         <AnimatePresence>
           {id ? (
@@ -83,11 +127,40 @@ function App() {
                 layoutId={id}
                 style={{
                   width: 400,
-                  height: 200,
+                  height: 300,
+                  backgroundColor: 'rgba(255, 255, 255, 1)',
                 }}
               />
             </Overlay>
           ) : null}
+        </AnimatePresence>
+        <AnimatePresence>
+          {isToggle && (
+            <Button
+              layout
+              animate={{
+                color: 'rgb(255,165,0)',
+                scale: 1.3,
+                border: '1px solid rgb(255,165,0)',
+              }}
+              onClick={handleToggle}
+            >
+              Switch
+            </Button>
+          )}
+          {!isToggle && (
+            <Button
+              layout
+              animate={{
+                color: 'rgb(0, 0, 255)',
+                scale: 1,
+                border: '1px solid rgb(0, 0, 255)',
+              }}
+              onClick={handleToggle}
+            >
+              Switch
+            </Button>
+          )}
         </AnimatePresence>
       </Wrapper>
     </ThemeProvider>
