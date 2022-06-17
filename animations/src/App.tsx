@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
@@ -21,80 +21,66 @@ const Wrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 50px;
 `;
 
 const Box = styled(motion.div)`
   width: 400px;
-  height: 200px;
+  height: 400px;
   background-color: rgba(255, 255, 255, 1);
   border-radius: 40px;
-  position: absolute;
-  top: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
-const box = {
-  entry: (back: boolean) => ({
-    x: back ? -500 : 500,
-    opacity: 0,
-    scale: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
-    },
-  },
-  exit: (back: boolean) => ({
-    x: back ? 500 : -500,
-    opacity: 0,
-    scale: 0,
-    rotateX: 180,
-    transition: {
-      duration: 0.3,
-    },
-  }),
-};
+const Circle = styled(motion.div)`
+  background-color: #00a5ff;
+  height: 100px;
+  width: 100px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
 
 function App() {
-  const [visible, setVisible] = useState(1);
-  const [isBack, setIsBack] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
-  const nextPlease = () => {
-    setIsBack(false);
-    setVisible((previous) => (previous === 10 ? 1 : previous + 1));
-  };
-
-  const prevPlease = () => {
-    setIsBack(true);
-    setVisible((previous) => (previous === 1 ? 10 : previous - 1));
-  };
+  const toggleClicked = () => setIsClicked((previous) => !previous);
 
   return (
     <ThemeProvider theme={darkTheme}>
       <GlobalStyle />
-      <Wrapper>
-        <AnimatePresence exitBeforeEnter custom={isBack}>
-          <Box
-            variants={box}
-            custom={isBack}
-            initial={'entry'}
-            animate={'center'}
-            exit={'exit'}
-            key={visible}
-          >
-            {visible}
-          </Box>
-        </AnimatePresence>
-        <button onClick={prevPlease}>Prev</button>
-        <button onClick={nextPlease}>Next</button>
+      <Wrapper onClick={toggleClicked}>
+        <Box
+          style={{
+            justifyContent: isClicked ? 'center' : 'flex-start',
+            alignItems: isClicked ? 'center' : 'flex-start',
+          }}
+        >
+          <Circle layout />
+        </Box>
+        <Box>
+          {!isClicked ? (
+            <Circle
+              layoutId="circle"
+              style={{
+                borderRadius: 50,
+              }}
+            />
+          ) : null}
+        </Box>
+        <Box>
+          {isClicked ? (
+            <Circle
+              layoutId="circle"
+              style={{
+                borderRadius: 0,
+                scale: 2,
+              }}
+            />
+          ) : null}
+        </Box>
       </Wrapper>
     </ThemeProvider>
   );
