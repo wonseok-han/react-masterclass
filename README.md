@@ -5,7 +5,7 @@
 
 - [x] Crypto Tracker
 
-- [ ] State Management
+- [x] State Management
 
 - [ ] Trello Clone
 

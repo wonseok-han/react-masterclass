@@ -21,21 +21,19 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "postinstall": "husky install",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src --fix",
-    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\""
+    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\"",
+    "prepare": "husky install"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint ./src --fix", "prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\""]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "echo lint test"
-    }
+    "./src/**/*.{js,jsx,ts,tsx}": [
+      "eslint ./src --fix",
+      "prettier -w ./src/**/*.(js|jsx|ts|tsx)"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -58,15 +56,16 @@
   "devDependencies": {
     "@types/react-helmet": "^6.1.5",
     "@types/styled-components": "^5.1.25",
-    "@typescript-eslint/eslint-plugin": "^5.27.1",
-    "@typescript-eslint/parser": "^5.27.1",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^2.7.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.30.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.1",
-    "prettier": "^2.6.2"
+    "lint-staged": "^13.0.2",
+    "prettier": "^2.7.1"
   }
 }
