@@ -71,18 +71,6 @@ const Box = styled(motion.div)<{ bgPhoto: string }>`
   }
 `;
 
-const rowVariants = {
-  hidden: {
-    x: window.outerWidth + 5,
-  },
-  visible: {
-    x: 0,
-  },
-  exit: {
-    x: -window.outerWidth - 5,
-  },
-};
-
 const Info = styled(motion.div)`
   padding: 10px;
   background-color: ${(props) => props.theme.black.lighter};
@@ -140,6 +128,32 @@ const ModalOverview = styled.p`
   top: -80px;
 `;
 
+const Arrow = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 36px;
+  font-weight: bold;
+  opacity: 1;
+  cursor: pointer;
+`;
+
+const rowVariants = {
+  hidden: (back: boolean) => ({
+    x: back ? window.outerWidth + 5 : -window.outerWidth - 5,
+  }),
+  visible: {
+    x: 0,
+  },
+  exit: (back: boolean) => ({
+    x: !back ? window.outerWidth + 5 : -window.outerWidth - 5,
+  }),
+};
+
 const boxVariants = {
   normal: {
     scale: 1,
@@ -167,6 +181,15 @@ const infoVariants = {
   },
 };
 
+const arrowVariants = {
+  normal: {
+    opacity: 0,
+  },
+  hover: {
+    opacity: 1,
+  },
+};
+
 const offset = 6;
 
 const Home = () => {
@@ -179,6 +202,7 @@ const Home = () => {
   );
   const [index, setIndex] = useState(0);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [isBack, setIsBack] = useState(false);
 
   const increaseIndex = () => {
     if (data) {
@@ -187,6 +211,19 @@ const Home = () => {
       const totalMovies = data?.results.length - 1;
       const maxIndex = Math.floor(totalMovies / offset);
       setIndex((previous) => (previous === maxIndex ? 0 : previous + 1));
+      setIsBack(true);
+    }
+  };
+
+  const decreaseIndex = () => {
+    if (data) {
+      if (isLeaving) return;
+      setIsLeaving(true);
+      const totalMovies = data?.results.length - 1;
+      const maxIndex = Math.floor(totalMovies / offset);
+      const minIndex = 0;
+      setIndex((previous) => (previous === minIndex ? maxIndex : previous - 1));
+      setIsBack(false);
     }
   };
 
@@ -207,17 +244,19 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner
-            bgPhoto={makeImagePath(data?.results[0].backdrop_path)}
-            onClick={increaseIndex}
-          >
+          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path)}>
             <Title>{data.results[0].title}</Title>
             <Overview>{data.results[0].overview}</Overview>
           </Banner>
           <Slider>
-            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+            <AnimatePresence
+              initial={false}
+              onExitComplete={toggleLeaving}
+              custom={isBack}
+            >
               <Row
                 key={index}
+                custom={isBack}
                 variants={rowVariants}
                 initial="hidden"
                 animate="visible"
@@ -227,6 +266,14 @@ const Home = () => {
                   duration: 1,
                 }}
               >
+                <Arrow
+                  variants={arrowVariants}
+                  initial="normal"
+                  whileHover="hover"
+                  onClick={decreaseIndex}
+                >
+                  &lt;
+                </Arrow>
                 {data?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
@@ -248,6 +295,18 @@ const Home = () => {
                       </Info>
                     </Box>
                   ))}
+                <Arrow
+                  variants={arrowVariants}
+                  initial="normal"
+                  whileHover="hover"
+                  style={{
+                    left: '100%',
+                    transform: 'translate(-100%)',
+                  }}
+                  onClick={increaseIndex}
+                >
+                  &gt;
+                </Arrow>
               </Row>
             </AnimatePresence>
           </Slider>
