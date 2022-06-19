@@ -113,6 +113,31 @@ const Modal = styled(motion.div)`
   left: 0;
   right: 0;
   margin: 0 auto;
+  background-color: ${(props) => props.theme.black.lighter};
+  border-radius: 15px;
+  overflow: hidden;
+`;
+
+const ModalCover = styled.div`
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center center;
+`;
+
+const ModalTitle = styled.h3`
+  color: ${(props) => props.theme.white.lighter};
+  font-size: 46px;
+  position: relative;
+  top: -80px;
+  padding: 20px;
+`;
+
+const ModalOverview = styled.p`
+  padding: 20px;
+  position: relative;
+  color: ${(props) => props.theme.white.lighter};
+  top: -80px;
 `;
 
 const boxVariants = {
@@ -170,6 +195,11 @@ const Home = () => {
     history(`/movies/${movieId}`);
   };
   const handleOverlayClick = () => history('/');
+  const clickMovie =
+    bigMovieMatch?.params.movieId &&
+    data.results.find(
+      (movie) => String(movie.id) === bigMovieMatch?.params.movieId
+    );
 
   return (
     <Wrapper>
@@ -236,7 +266,22 @@ const Home = () => {
                 <Modal
                   layoutId={bigMovieMatch.params.movieId}
                   style={{ top: scrollY.get() + 50 }}
-                ></Modal>
+                >
+                  {clickMovie && (
+                    <>
+                      <ModalCover
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            clickMovie.backdrop_path,
+                            'w500'
+                          )})`,
+                        }}
+                      />
+                      <ModalTitle>{clickMovie.title}</ModalTitle>
+                      <ModalOverview>{clickMovie.overview}</ModalOverview>
+                    </>
+                  )}
+                </Modal>
               </>
             )}
           </AnimatePresence>
