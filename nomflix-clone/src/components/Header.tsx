@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { motion, useAnimation, useViewportScroll } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Link, useMatch } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Nav = styled(motion.nav)`
@@ -49,7 +51,7 @@ const Item = styled.li`
   }
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -106,6 +108,10 @@ const navVariants = {
   },
 };
 
+interface FormProps {
+  keyword: string;
+}
+
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const homeMatch = useMatch('/');
@@ -113,6 +119,11 @@ const Header = () => {
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useViewportScroll();
+  const history = useNavigate();
+  const { register, handleSubmit } = useForm<FormProps>();
+  const onValid = (data: FormProps) => {
+    history(`/search?keyword=${data.keyword}`);
+  };
 
   useEffect(() => {
     scrollY.onChange(() => {
@@ -163,7 +174,7 @@ const Header = () => {
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             animate={{
               x: isSearchOpen ? -210 : 0,
@@ -183,6 +194,7 @@ const Header = () => {
             ></path>
           </motion.svg>
           <Input
+            {...register('keyword', { required: true, minLength: 2 })}
             initial={{
               scaleX: 0,
             }}
