@@ -1,16 +1,15 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, useAnimation, useViewportScroll } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { Link, useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Nav = styled.nav`
+const Nav = styled(motion.nav)`
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: black;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
@@ -98,15 +97,48 @@ const logoVariants = {
   },
 };
 
+const navVariants = {
+  top: {
+    backgroundColor: 'rgba(0,0,0,1)',
+  },
+  scroll: {
+    backgroundColor: 'rgba(0,0,0,0)',
+  },
+};
+
 const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const homeMatch = useMatch('/');
   const tvMatch = useMatch('tv');
+  const inputAnimation = useAnimation();
+  const navAnimation = useAnimation();
+  const { scrollY } = useViewportScroll();
 
-  const toggleSearch = () => setIsSearchOpen((previous) => !previous);
+  useEffect(() => {
+    scrollY.onChange(() => {
+      if (scrollY.get() > 80) {
+        void navAnimation.start('scroll');
+      } else {
+        void navAnimation.start('top');
+      }
+    });
+  }, [scrollY]);
+
+  const toggleSearch = () => {
+    if (isSearchOpen) {
+      void inputAnimation.start({
+        scaleX: 0,
+      });
+    } else {
+      void inputAnimation.start({
+        scaleX: 1,
+      });
+    }
+    setIsSearchOpen((previous) => !previous);
+  };
 
   return (
-    <Nav>
+    <Nav variants={navVariants} initial={'top'} animate={navAnimation}>
       <Col>
         <Logo
           variants={logoVariants}
@@ -151,7 +183,10 @@ const Header = () => {
             ></path>
           </motion.svg>
           <Input
-            animate={{ scaleX: isSearchOpen ? 1 : 0 }}
+            initial={{
+              scaleX: 0,
+            }}
+            animate={inputAnimation}
             transition={{
               type: 'linear',
             }}
