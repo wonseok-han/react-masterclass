@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
@@ -63,9 +64,9 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  color:black;
+  color: ${(props) => props.theme.white.darker};
   line-height: 1.2;
-  
+  background-color: black;
 }
 a {
   text-decoration:none;
@@ -73,20 +74,24 @@ a {
 }
 `;
 
+const client = new QueryClient();
+
 function App() {
   return (
     <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/tv" element={<Tv />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/" element={<Home />} />
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+      <QueryClientProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route path="/tv" element={<Tv />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryClientProvider>
     </RecoilRoot>
   );
 }

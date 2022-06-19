@@ -12,3 +12,6 @@
 
 # Animation
 - [Framer Motion](https://www.framer.com/motion/)
+
+# API
+- [TMDB](https://www.themoviedb.org/)
