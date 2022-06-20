@@ -29,7 +29,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint ./src --fix",
-    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\""
+    "prettier": "npx prettier -w ./src/**/*.\"(js|jsx|ts|tsx)\"",
+    "deploy": "gh-pages -d build",
+    "predeploy": "yarn build"
   },
   "eslintConfig": {
     "extends": [
@@ -61,5 +63,6 @@
     "eslint-plugin-react": "^7.30.0",
     "lint-staged": "^13.0.1",
     "prettier": "^2.7.0"
-  }
+  },
+  "homepage": "https://wonseok-han.github.io/react-masterclass"
 }

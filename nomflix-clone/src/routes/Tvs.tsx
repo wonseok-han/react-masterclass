@@ -4,9 +4,9 @@ import { useQuery } from 'react-query';
 import { useMatch, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Movies from 'components/Movies';
-import { getMovies } from 'utils/api';
-import { GenresProps, GetMoviesProps, MovieProps } from 'utils/types';
+import Tv from 'components/Tv';
+import { getTvs } from 'utils/api';
+import { GenresProps, GetTvsProps, TvProps } from 'utils/types';
 import { makeImagePath } from 'utils/utils';
 
 const Wrapper = styled.div`
@@ -54,7 +54,7 @@ const Overlay = styled(motion.div)`
 const Modal = styled(motion.div)`
   position: absolute;
   width: 40vw;
-  height: 70vh;
+  height: 80vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -87,44 +87,40 @@ const ModalOverview = styled.p`
   top: -80px;
 `;
 
-const Home = () => {
+const Tvs = () => {
   const history = useNavigate();
-  const { movieId } = useParams();
-  const bigMovieMatch = useMatch('/movies/:movieId');
+  const { tvId } = useParams();
+  const bigTvMatch = useMatch('/tv/:tvId');
   const { scrollY } = useViewportScroll();
-  const { data: latest, isLoading: isLatestLoading } = useQuery<MovieProps>(
+  const { data: latest, isLoading: isLatestLoading } = useQuery<TvProps>(
     ['movies', 'latest'],
-    () => getMovies('latest')
+    () => getTvs('latest')
   );
-  const { data: nowPlaying, isLoading: isNowPlayingLoading } =
-    useQuery<GetMoviesProps>(['movies', 'nowPlaying'], () =>
-      getMovies('now_playing')
-    );
-  const { data: popular, isLoading: isPopularLoading } =
-    useQuery<GetMoviesProps>(['movies', 'popular'], () => getMovies('popular'));
+  const { data: airingToday, isLoading: isAiringTodayLoading } =
+    useQuery<GetTvsProps>(['tv', 'airing_today'], () => getTvs('airing_today'));
+  const { data: onTheAir, isLoading: isOnTheAirLoading } =
+    useQuery<GetTvsProps>(['tv', 'on_the_air'], () => getTvs('on_the_air'));
+  const { data: popular, isLoading: isPopularLoading } = useQuery<GetTvsProps>(
+    ['tv', 'popular'],
+    () => getTvs('popular')
+  );
   const { data: topRated, isLoading: isTopRatedLoading } =
-    useQuery<GetMoviesProps>(['movies', 'top_rated'], () =>
-      getMovies('top_rated')
-    );
-  const { data: upcoming, isLoading: isUpcomingLoading } =
-    useQuery<GetMoviesProps>(['movies', 'upcoming'], () =>
-      getMovies('upcoming')
-    );
+    useQuery<GetTvsProps>(['tv', 'top_rated'], () => getTvs('top_rated'));
   const {
-    data: movie,
-    isLoading: isMovieLoading,
-    refetch: movieRefetch,
-  } = useQuery<MovieProps>(['movie', movieId], () => getMovies(movieId), {
+    data: tv,
+    isLoading: isTvLoading,
+    refetch: tvRefetch,
+  } = useQuery<TvProps>(['tv', tvId], () => getTvs(tvId), {
     enabled: false,
   });
 
-  const handleOverlayClick = () => history('/');
+  const handleOverlayClick = () => history('/tv');
 
   useEffect(() => {
-    if (movieId) {
-      void movieRefetch();
+    if (tvId) {
+      void tvRefetch();
     }
-  }, [movieId]);
+  }, [tvId]);
 
   return (
     <Wrapper>
@@ -137,44 +133,44 @@ const Home = () => {
               latest?.backdrop_path || latest?.poster_path
             )}
           >
-            <Title>{latest?.title}</Title>
+            <Title>{latest?.name}</Title>
             <Overview>{latest?.overview}</Overview>
           </Banner>
-          <Movies
-            id="now_playing"
-            title="Now Playing"
-            data={nowPlaying}
-            isLoading={isNowPlayingLoading}
+          <Tv
+            id="airing_today"
+            title="Airing Today"
+            data={airingToday}
+            isLoading={isAiringTodayLoading}
           />
-          <Movies
+          <Tv
+            id="on_the_air"
+            title="On The Air"
+            data={onTheAir}
+            isLoading={isOnTheAirLoading}
+            top={100}
+          />
+          <Tv
             id="popular"
             title="Popular"
             data={popular}
             isLoading={isPopularLoading}
-            top={100}
+            top={300}
           />
-          <Movies
+          <Tv
             id="top_rated"
             title="Top Rated"
             data={topRated}
             isLoading={isTopRatedLoading}
-            top={300}
-          />
-          <Movies
-            id="upcoming"
-            title="Upcoming"
-            data={upcoming}
-            isLoading={isUpcomingLoading}
             top={500}
           />
 
           <AnimatePresence initial={false}>
-            {movieId && bigMovieMatch && isMovieLoading ? (
+            {tvId && bigTvMatch && isTvLoading ? (
               <Loader>Loading...</Loader>
-            ) : movieId && movie ? (
+            ) : tvId && tv ? (
               <>
                 <Overlay
-                  layoutId={`${movieId}`}
+                  layoutId={`${tvId}`}
                   onClick={handleOverlayClick}
                   animate={{
                     opacity: 1,
@@ -184,7 +180,7 @@ const Home = () => {
                   }}
                 />
                 <Modal
-                  layoutId={`${movieId}`}
+                  layoutId={`${tvId}`}
                   initial={{
                     opacity: 0,
                   }}
@@ -200,13 +196,12 @@ const Home = () => {
                     <ModalCover
                       style={{
                         backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                          movie?.backdrop_path,
+                          tv?.backdrop_path,
                           'w500'
                         )})`,
                       }}
                     />
-                    <ModalTitle>{movie?.title}</ModalTitle>
-
+                    <ModalTitle>{tv?.name}</ModalTitle>
                     <ModalOverview>
                       <div
                         style={{
@@ -218,7 +213,7 @@ const Home = () => {
                             fontSize: '18px',
                           }}
                         >
-                          {movie?.overview}
+                          {tv?.overview}
                         </div>
                       </div>
                       <div
@@ -242,7 +237,7 @@ const Home = () => {
                             >
                               평점 :
                             </span>
-                            {movie?.vote_average}
+                            {tv?.vote_average}
                           </div>
                           <div
                             style={{
@@ -255,9 +250,9 @@ const Home = () => {
                                 color: 'darkgray',
                               }}
                             >
-                              개봉일자 :
+                              방영일자 :
                             </span>
-                            {movie?.release_date}
+                            {tv?.first_air_date}
                           </div>
                           <div
                             style={{
@@ -274,7 +269,7 @@ const Home = () => {
                               장르 :
                             </span>
                             <div>
-                              {movie?.genres.map((genre: GenresProps) => (
+                              {tv?.genres.map((genre: GenresProps) => (
                                 <p
                                   key={genre.id}
                                   style={{
@@ -300,4 +295,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Tvs;

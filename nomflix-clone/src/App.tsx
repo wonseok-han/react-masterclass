@@ -7,7 +7,7 @@ import Header from 'components/Header';
 import { theme } from 'global/theme';
 import Home from 'routes/Home';
 import Search from 'routes/Search';
-import Tv from 'routes/Tv';
+import Tvs from 'routes/Tvs';
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -86,10 +86,12 @@ function App() {
           <BrowserRouter>
             <Header />
             <Routes>
-              <Route path="/tv" element={<Tv />} />
+              <Route path="/tv" element={<Tvs />}>
+                <Route path="/tv/:tvId" element={<Tvs />} />
+              </Route>
               <Route path="/search" element={<Search />} />
               <Route path="/" element={<Home />}>
-                <Route path="/movies/:movieId" />
+                <Route path="/movies/:movieId" element={<Home />} />
               </Route>
             </Routes>
           </BrowserRouter>

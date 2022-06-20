@@ -121,6 +121,7 @@ const Header = () => {
   const { scrollY } = useViewportScroll();
   const history = useNavigate();
   const { register, handleSubmit } = useForm<FormProps>();
+
   const onValid = (data: FormProps) => {
     history(`/search?keyword=${data.keyword}`);
   };
